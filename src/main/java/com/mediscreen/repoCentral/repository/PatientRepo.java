@@ -11,10 +11,10 @@ import java.util.List;
 public interface PatientRepo extends JpaRepository<Patient,Long> {
 
     // query to check if patient already exist by some of his fields.
-    @Query("SELECT CASE WHEN 'sex'=?1 AND 'address'=?2 AND 'phone'=?3 AND 'name'=?4 THEN 1 ELSE 0 END FROM Patient")
-    Boolean assertPatientExist (String sex, String address, String phone, String name);
+    @Query("SELECT CASE WHEN p.sex=?1 AND p.address=?2 AND p.phone=?3 THEN true ELSE false END FROM Patient p")
+    Boolean assertPatientExist (String sex, String address, String phone);
 
-    
-    @Query(value = "SELECT * FROM Patient WHERE family=?1")
+    // find a patient by his family (From TestNone to TestInDanger)
+    @Query(value = "SELECT p FROM Patient p WHERE p.family=?1")
     List<Patient> findByFamily(String family);
 }
