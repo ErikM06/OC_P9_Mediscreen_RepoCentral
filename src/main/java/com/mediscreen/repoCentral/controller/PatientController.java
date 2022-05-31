@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,9 +63,9 @@ public class PatientController {
             patientService.addAPatient(patient);
         } catch (PatientAlreadyExistException e){
             logger.info("Error in /patient/add :"+e.getMessage());
-           throw new PatientAlreadyExistException("Patient "+patient.getName()+" already exist!");
+           throw new PatientAlreadyExistException(e.getMessage());
         }
-        return new ResponseEntity<>(patient, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(patient, HttpStatus.CREATED);
     }
 
     @PostMapping ("/update")
@@ -72,9 +73,19 @@ public class PatientController {
         try {
             patientService.updatePatient(patient);
         } catch (PatientIdNotFoundException e){
-            throw new PatientAlreadyExistException("Patient with id: "+patient.getId()+" not found");
+            throw new PatientIdNotFoundException(e.getMessage());
         }
-        return new ResponseEntity<>(patient, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(patient, HttpStatus.OK);
+    }
+
+    @DeleteMapping ("/deleteById")
+    public ResponseEntity<?> deletePatient (@RequestParam Long id){
+        try {
+            patientService.deletePatientById(id);
+        } catch (PatientIdNotFoundException e){
+            throw new PatientIdNotFoundException(e.getMessage());
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

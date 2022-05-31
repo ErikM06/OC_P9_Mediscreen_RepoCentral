@@ -68,21 +68,28 @@ public class PatientService {
         return patientLs;
     }
 
-    @Transactional
-    public Patient updatePatient (Patient patient) throws PatientIdNotFoundException {
+
+    public void updatePatient (Patient patient) throws PatientIdNotFoundException {
         logger.info("in PatientService updatePatient");
         if (!repo.existsById(patient.getId())){
             throw  new PatientIdNotFoundException("patient with id "+patient.getId()+ " not found !");
         }
 
 
-        return repo.save(patient);
+        repo.save(patient);
     }
 
-    public Patient getById(Long id) {
+    public Patient getById(Long id) throws PatientIdNotFoundException{
         if (!repo.existsById(id)){
             throw  new PatientIdNotFoundException("patient with id "+ id+ " not found !");
         }
         return repo.getReferenceById(id);
+    }
+
+    public void deletePatientById(Long id) throws PatientIdNotFoundException {
+        if (!repo.existsById(id)){
+            throw new PatientIdNotFoundException("Patient with id "+ id+ " not found !");
+        }
+        repo.deleteById(id);
     }
 }
