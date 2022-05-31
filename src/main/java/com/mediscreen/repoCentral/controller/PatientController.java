@@ -1,6 +1,7 @@
 package com.mediscreen.repoCentral.controller;
 
-import com.mediscreen.repoCentral.Model.Patient;
+import com.mediscreen.repoCentral.customExceptions.PatientIdNotFoundException;
+import com.mediscreen.repoCentral.model.Patient;
 import com.mediscreen.repoCentral.customExceptions.PatientAlreadyExistException;
 import com.mediscreen.repoCentral.services.PatientService;
 import org.slf4j.Logger;
@@ -8,10 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,10 +34,11 @@ public class PatientController {
     public ResponseEntity<?> getPatientById (@RequestParam Long id){
         Patient patient = null;
         try {
+            logger.info("in /getById");
             patient =  patientService.getById(id);
-        } catch (EntityNotFoundException e){
+        } catch (PatientIdNotFoundException e){
             logger.info("Error in /patient/getById :"+e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+           throw new PatientAlreadyExistException("Patient with id: "+id+" not found");
         }
         return new ResponseEntity<>(patient, HttpStatus.OK);
 
@@ -46,25 +46,14 @@ public class PatientController {
     }
     @GetMapping ("/getPatientList")
     public ResponseEntity<List<Patient>> getPatient() {
-        List<Patient> patientList = new ArrayList<>();
-        try {
-            patientList = patientService.getPatient();
-        } catch (EntityNotFoundException e){
-            logger.info("Error in /getPatient");
-            e.getMessage();
-        }
+        List<Patient> patientList = patientService.getPatient();
         return new ResponseEntity<>(patientList, HttpStatus.OK);
     }
 
     @GetMapping ("/getPatientByFamily")
-    public List<Patient> getPatientByFamily (@RequestParam String family){
-        List<Patient> patientls = null;
-        try {
-            patientls = patientService.getByFamily(family);
-        } catch (NullPointerException e){
-            e.getMessage();
-        }
-        return patientls ;
+    public ResponseEntity< List<Patient>> getPatientByFamily (@RequestParam String family){
+        List<Patient> patientls = patientService.getByFamily(family);
+        return new ResponseEntity<>(patientls, HttpStatus.OK);
     }
 
     @PostMapping("/add")
@@ -73,17 +62,17 @@ public class PatientController {
             patientService.addAPatient(patient);
         } catch (PatientAlreadyExistException e){
             logger.info("Error in /patient/add :"+e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+           throw new PatientAlreadyExistException("Patient "+patient.getName()+" already exist!");
         }
         return new ResponseEntity<>(patient, HttpStatus.ACCEPTED);
     }
 
-    @PutMapping ("/update")
+    @PostMapping ("/update")
     public ResponseEntity<?> updatePatient (@RequestBody Patient patient){
         try {
             patientService.updatePatient(patient);
-        } catch (EntityNotFoundException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (PatientIdNotFoundException e){
+            throw new PatientAlreadyExistException("Patient with id: "+patient.getId()+" not found");
         }
         return new ResponseEntity<>(patient, HttpStatus.ACCEPTED);
     }

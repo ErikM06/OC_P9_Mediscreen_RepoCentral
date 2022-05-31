@@ -1,4 +1,4 @@
-package com.mediscreen.repoCentral.Model;
+package com.mediscreen.repoCentral.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

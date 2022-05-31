@@ -1,6 +1,7 @@
 package com.mediscreen.repoCentral.services;
 
-import com.mediscreen.repoCentral.Model.Patient;
+import com.mediscreen.repoCentral.customExceptions.PatientIdNotFoundException;
+import com.mediscreen.repoCentral.model.Patient;
 
 import com.mediscreen.repoCentral.customExceptions.PatientAlreadyExistException;
 import com.mediscreen.repoCentral.repository.PatientRepo;
@@ -25,12 +26,6 @@ public class PatientService {
 
     /**
      *
-     * @return a list of family types
-     */
-
-
-    /**
-     *
      * @param patient
      * @return the patient to be saved
      * @throws PatientAlreadyExistException
@@ -49,7 +44,7 @@ public class PatientService {
      * @return a list of all patients
      * @throws EntityNotFoundException
      */
-    public List<Patient> getPatient() throws EntityNotFoundException {
+    public List<Patient> getPatient() throws PatientIdNotFoundException {
         logger.info("in PatientService getPatient");
         return repo.findAll();
     }
@@ -74,17 +69,19 @@ public class PatientService {
     }
 
     @Transactional
-    public Patient updatePatient (Patient patient) throws EntityNotFoundException {
+    public Patient updatePatient (Patient patient) throws PatientIdNotFoundException {
         logger.info("in PatientService updatePatient");
         if (!repo.existsById(patient.getId())){
-            throw  new EntityNotFoundException("patient with id "+patient.getId()+ " not found !");
+            throw  new PatientIdNotFoundException("patient with id "+patient.getId()+ " not found !");
         }
-       return repo.save(patient);
+
+
+        return repo.save(patient);
     }
 
     public Patient getById(Long id) {
         if (!repo.existsById(id)){
-            throw  new EntityNotFoundException("patient with id "+ id+ " not found !");
+            throw  new PatientIdNotFoundException("patient with id "+ id+ " not found !");
         }
         return repo.getReferenceById(id);
     }
