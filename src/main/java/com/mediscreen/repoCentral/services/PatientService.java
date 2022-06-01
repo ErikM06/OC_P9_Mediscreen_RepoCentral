@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +43,7 @@ public class PatientService {
      * @return a list of all patients
      * @throws EntityNotFoundException
      */
-    public List<Patient> getPatient() throws PatientIdNotFoundException {
+    public List<Patient> getAllPatient() throws PatientIdNotFoundException {
         logger.info("in PatientService getPatient");
         return repo.findAll();
     }

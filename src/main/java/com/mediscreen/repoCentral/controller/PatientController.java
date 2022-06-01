@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -47,7 +45,7 @@ public class PatientController {
     }
     @GetMapping ("/getPatientList")
     public ResponseEntity<List<Patient>> getPatient() {
-        List<Patient> patientList = patientService.getPatient();
+        List<Patient> patientList = patientService.getAllPatient();
         return new ResponseEntity<>(patientList, HttpStatus.OK);
     }
 
@@ -85,7 +83,7 @@ public class PatientController {
         } catch (PatientIdNotFoundException e){
             throw new PatientIdNotFoundException(e.getMessage());
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 }
