@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(PatientController.class)
-@TestPropertySource(locations="classpath:test.properties")
+@TestPropertySource(locations= "classpath:application-test.properties")
 public class PatientControllerTest {
 
     @Autowired
@@ -44,7 +44,7 @@ public class PatientControllerTest {
 
     @Test
     public void getPatientByIdTest_shouldReturns_200() throws Exception {
-        Long id = Long.valueOf(1);
+        long id = 1;
         mvc.perform(get("/patient/getById"+"?id="+id)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -98,6 +98,7 @@ public class PatientControllerTest {
     public void updatePatientTest_shouldReturns_200() throws Exception {
         Patient patient = new Patient("TestNone", "test", new Date(System.currentTimeMillis())
                 ,"F","addressTest","phoneTest");
+        patient.setId(1L);
 
         mvc.perform(post("/patient/update")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -107,9 +108,9 @@ public class PatientControllerTest {
 
     @Test
     public void deletePatientTest_shouldReturns_202() throws Exception {
-        Long id = Long.valueOf(1);
+        long id = 1;
         mvc.perform(delete("/patient/deleteById")
-                        .param("id", id.toString()))
+                        .param("id", Long.toString(id)))
                 .andExpect(status().isAccepted());
     }
 

@@ -1,17 +1,15 @@
 package com.mediscreen.repoCentral.services;
 
+import com.mediscreen.repoCentral.customExceptions.PatientAlreadyExistException;
 import com.mediscreen.repoCentral.customExceptions.PatientIdNotFoundException;
 import com.mediscreen.repoCentral.model.Patient;
-
-import com.mediscreen.repoCentral.customExceptions.PatientAlreadyExistException;
 import com.mediscreen.repoCentral.repository.PatientRepo;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +27,8 @@ public class PatientService {
      * @return the patient to be saved
      * @throws PatientAlreadyExistException
      */
+
+
     public Patient addAPatient (Patient patient) throws PatientAlreadyExistException {
         logger.info("in PatientService addAPatient");
         if (repo.assertPatientExist(patient.getSex(), patient.getAddress(), patient.getPhone())){
@@ -41,9 +41,8 @@ public class PatientService {
     /**
      *
      * @return a list of all patients
-     * @throws EntityNotFoundException
      */
-    public List<Patient> getAllPatient() throws PatientIdNotFoundException {
+    public List<Patient> getAllPatient() {
         logger.info("in PatientService getPatient");
         return repo.findAll();
     }

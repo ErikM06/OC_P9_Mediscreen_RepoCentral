@@ -55,6 +55,17 @@ public class Patient {
 
     }
 
+    public Patient(Long id, String name, String family, Date dob, String given, String sex, String address, String phone) {
+        this.id = id;
+        this.name = name;
+        this.family = family;
+        this.dob = dob;
+        this.given = given;
+        this.sex = sex;
+        this.address = address;
+        this.phone = phone;
+    }
+
     public Long getId() {
         return id;
     }
