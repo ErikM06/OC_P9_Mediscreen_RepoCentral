@@ -40,7 +40,7 @@ public class CustomExceptionHandlerTest {
     PatientService patientService;
 
 
-    @Test
+   /* @Test
     public void handlePatientAlreadyExistTest_shouldReturns_400() throws Exception{
         Patient patient = new Patient("TestNone", "test", new Date(System.currentTimeMillis())
                 ,"F","addressTest","phoneTest");
@@ -58,7 +58,7 @@ public class CustomExceptionHandlerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error",hasSize(1)));
     }
-
+ */
     /*
     @Test
     public void handlePatientNotFound() throws Exception {

@@ -43,18 +43,6 @@ public class Patient {
         this.phone = phone;
     }
 
-    // Used to assert if a patient already exist
-    public Patient(Date dob, String sex, String address, String phone) {
-        this.dob = dob;
-        this.sex = sex;
-        this.address = address;
-        this.phone = phone;
-    }
-
-    public Patient() {
-
-    }
-
     public Patient(Long id, String name, String family, Date dob, String given, String sex, String address, String phone) {
         this.id = id;
         this.name = name;
@@ -64,6 +52,9 @@ public class Patient {
         this.sex = sex;
         this.address = address;
         this.phone = phone;
+    }
+
+    public Patient() {
     }
 
     public Long getId() {

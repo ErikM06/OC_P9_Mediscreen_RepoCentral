@@ -72,8 +72,6 @@ public class PatientService {
         if (!repo.existsById(patient.getId())){
             throw  new PatientIdNotFoundException("patient with id "+patient.getId()+ " not found !");
         }
-
-
         repo.save(patient);
     }
 

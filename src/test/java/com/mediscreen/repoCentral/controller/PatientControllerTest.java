@@ -44,11 +44,9 @@ public class PatientControllerTest {
 
     @Test
     public void getPatientByIdTest_shouldReturns_200() throws Exception {
-        long id = 1;
-        mvc.perform(get("/patient/getById"+"?id="+id)
+        mvc.perform(get("/patient/getById"+"?id="+1L)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)));
+                .andExpect(status().isOk());
     }
 
     @Test
