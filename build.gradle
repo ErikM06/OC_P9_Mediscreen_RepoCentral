@@ -23,6 +23,8 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	implementation 'org.springframework.boot:spring-boot-devtools:2.6.7'
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.29'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server:3.1.2'
+
 	
 	compileOnly 'org.projectlombok:lombok'
 	

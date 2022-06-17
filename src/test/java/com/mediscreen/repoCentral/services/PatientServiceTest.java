@@ -46,7 +46,7 @@ public class PatientServiceTest {
 
     @BeforeEach
     public void initTest (){
-        patientRepo.save(this.patient);
+        this.patient = patientRepo.save(this.patient);
         logger.debug("patient repo size: "+patientRepo.findAll().size());
 
     }
@@ -58,15 +58,15 @@ public class PatientServiceTest {
 
     @Test
     public void getByIdTest() throws PatientIdNotFoundException {
-       Patient patient = patientService.getById(this.patient.getId());
-       assertNotNull(patient);
+        Patient patient = patientService.getById(this.patient.getId());
+        assertNotNull(patient);
     }
 
     @Test
     public void shouldReturnExceptionIfIdNotFound (){
         // assert exception is thrown when id is not found
         PatientIdNotFoundException thrown = Assertions.assertThrows(PatientIdNotFoundException.class, ()->{
-         patientService.getById(70L);
+            patientService.getById(70L);
         });
     }
 
@@ -84,7 +84,7 @@ public class PatientServiceTest {
     public void assertCanNotAddPatientIfExist (){
         // add already existing patient
         PatientAlreadyExistException thrown = Assertions.assertThrows(PatientAlreadyExistException.class, ()->{
-           patientService.addAPatient(patient);
+            patientService.addAPatient(patient);
         });
 
 
@@ -108,23 +108,23 @@ public class PatientServiceTest {
         assertNotEquals(patientList.size(),patientListSpecifiedFamily.size());
         assertTrue(patientListSpecifiedFamily.contains(patient));
     }
-/*
+
     @Transactional
     @Test
     public void updatePatientTest() throws PatientIdNotFoundException {
         Patient newPatient = new Patient(2L,"newPatientTest","TestDanger", new Date(System.currentTimeMillis()), "newTest"
                 , "F", "newAddressTest", "newPhoneTest");
 
-      Patient oldPatient = patientRepo.getReferenceById(this.patient.getId());
-       logger.debug("id "+this.patient.getId());
-       String name = oldPatient.getName();
+        Patient oldPatient = patientRepo.getReferenceById(this.patient.getId());
+        logger.debug("id "+this.patient.getId());
+        String name = oldPatient.getName();
         logger.debug("name "+name);
         newPatient.setId(oldPatient.getId());
-       patientService.updatePatient(newPatient);
-      Optional<Patient> check = patientRepo.findById(this.patient.getId());
-      assertNotEquals(name, check.get().getName());
+        patientService.updatePatient(newPatient);
+        Optional<Patient> check = patientRepo.findById(this.patient.getId());
+        assertNotEquals(name, check.get().getName());
 
-    }*/
+    }
 }
 
 

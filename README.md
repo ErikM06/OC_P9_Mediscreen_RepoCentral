@@ -20,10 +20,10 @@ Mediscreen est composé de 2 microservice :
 
 ### Gradle :
 1. Builder l'application
-`$ gradle build̀`
+`$ ./gradle build̀`
 
 2. Run l'application
-`$ gradle bootRun`
+`$ ./gradle bootRun`
 
 # Endpoints 
 
@@ -46,6 +46,10 @@ Mediscreen est composé de 2 microservice :
     POST - update un Patient 
     http://localhost:8081/patient/update
     Body : Patient
+    
+    DELETE - delete un Patient 
+    http://localhost:8081/patient/deleteById
+    Param : id
 
 
 

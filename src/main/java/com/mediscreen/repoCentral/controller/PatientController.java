@@ -50,7 +50,7 @@ public class PatientController {
     }
 
     @GetMapping ("/getPatientByFamily")
-    public ResponseEntity< List<Patient>> getPatientByFamily (@RequestParam String family){
+    public ResponseEntity<List<Patient>> getPatientByFamily (@RequestParam String family){
         List<Patient> patientls = patientService.getByFamily(family);
         return new ResponseEntity<>(patientls, HttpStatus.OK);
     }
