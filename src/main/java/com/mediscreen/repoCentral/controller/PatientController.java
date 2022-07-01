@@ -30,7 +30,7 @@ public class PatientController {
 
 
     @GetMapping ("/getById")
-    public ResponseEntity<?> getPatientById (@RequestParam Long id){
+    public Patient getPatientById (@RequestParam Long id){
         Patient patient = null;
         try {
             logger.info("in /getById");
@@ -39,51 +39,50 @@ public class PatientController {
             logger.info("Error in /patient/getById :"+e.getMessage());
            throw new PatientAlreadyExistException("Patient with id: "+id+" not found");
         }
-        return new ResponseEntity<>(patient, HttpStatus.OK);
+        return patient;
 
 
     }
     @GetMapping ("/getPatientList")
-    public ResponseEntity<List<Patient>> getPatient() {
+    public List<Patient>getPatient() {
         List<Patient> patientList = patientService.getAllPatient();
-        return new ResponseEntity<>(patientList, HttpStatus.OK);
+        return patientList;
     }
 
     @GetMapping ("/getPatientByFamily")
-    public ResponseEntity<List<Patient>> getPatientByFamily (@RequestParam String family){
+    public List<Patient> getPatientByFamily (@RequestParam String family){
         List<Patient> patientls = patientService.getByFamily(family);
-        return new ResponseEntity<>(patientls, HttpStatus.OK);
+        return patientls;
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addPatient (@RequestBody Patient patient){
+    public Patient addPatient (@RequestBody Patient patient){
         try {
             patientService.addAPatient(patient);
         } catch (PatientAlreadyExistException e){
             logger.info("Error in /patient/add :"+e.getMessage());
            throw new PatientAlreadyExistException(e.getMessage());
         }
-        return new ResponseEntity<>(patient, HttpStatus.CREATED);
+        return patient;
     }
 
     @PostMapping ("/update")
-    public ResponseEntity<?> updatePatient (@RequestBody Patient patient){
+    public Patient updatePatient (@RequestBody Patient patient){
         try {
             patientService.updatePatient(patient);
         } catch (PatientIdNotFoundException e){
             throw new PatientIdNotFoundException(e.getMessage());
         }
-        return new ResponseEntity<>(patient, HttpStatus.OK);
+        return patient;
     }
 
     @DeleteMapping ("/deleteById")
-    public ResponseEntity<?> deletePatient (@RequestParam Long id){
+    public void deletePatient (@RequestParam Long id){
         try {
             patientService.deletePatientById(id);
         } catch (PatientIdNotFoundException e){
             throw new PatientIdNotFoundException(e.getMessage());
         }
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 }
