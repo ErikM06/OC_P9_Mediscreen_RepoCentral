@@ -22,8 +22,10 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idpatient")
     private Long id;
-
-    private String name;
+    @Column(name ="firstname")
+    private String firstname;
+    @Column(name ="lastname")
+    private String lastname;
     private String family;
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date dob;
@@ -43,9 +45,10 @@ public class Patient {
         this.phone = phone;
     }
 
-    public Patient(Long id, String name, String family, Date dob, String given, String sex, String address, String phone) {
+    public Patient(Long id, String firstname, String lastname, String family, Date dob, String given, String sex, String address, String phone) {
         this.id = id;
-        this.name = name;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.family = family;
         this.dob = dob;
         this.given = given;
@@ -65,12 +68,20 @@ public class Patient {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstname(String name) {
+        this.firstname = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getFamily() {

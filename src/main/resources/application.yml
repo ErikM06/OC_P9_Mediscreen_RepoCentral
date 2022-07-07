@@ -1,0 +1,39 @@
+logging:
+  level:
+    com.mediscreen : DEBUG
+spring:
+  datasource:
+    url: ${url}
+    username: ${username}
+    password: ${password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+  application:
+    name: mediscreen-patient
+  jackson:
+    serialization:
+      fail-on-empty-beans: false # false to return empty beans on request (like name in patient table)
+  cloud:
+    config:
+      enabled: false
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+      instance:
+        instance-id: ${spring.application.name}-${random.uuid}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+server:
+  port: 8081
+
+
+

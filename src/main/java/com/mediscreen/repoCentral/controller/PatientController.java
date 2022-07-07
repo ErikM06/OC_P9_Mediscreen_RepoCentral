@@ -29,27 +29,27 @@ public class PatientController {
     PatientService patientService;
 
 
-    @GetMapping ("/getById")
+    @GetMapping ("/get-by-id")
     public Patient getPatientById (@RequestParam Long id){
         Patient patient = null;
         try {
-            logger.info("in /getById");
+            logger.info("in /get-by-bd");
             patient =  patientService.getById(id);
         } catch (PatientIdNotFoundException e){
-            logger.info("Error in /patient/getById :"+e.getMessage());
-           throw new PatientAlreadyExistException("Patient with id: "+id+" not found");
+            logger.info("Error in /patient/get-by-id :"+e.getMessage());
+           throw new PatientIdNotFoundException("Patient with id: "+id+" not found");
         }
         return patient;
 
 
     }
-    @GetMapping ("/getPatientList")
+    @GetMapping ("/get-patient-list")
     public List<Patient>getPatient() {
         List<Patient> patientList = patientService.getAllPatient();
         return patientList;
     }
 
-    @GetMapping ("/getPatientByFamily")
+    @GetMapping ("/get-patient-by-family")
     public List<Patient> getPatientByFamily (@RequestParam String family){
         List<Patient> patientls = patientService.getByFamily(family);
         return patientls;
@@ -76,7 +76,7 @@ public class PatientController {
         return patient;
     }
 
-    @DeleteMapping ("/deleteById")
+    @DeleteMapping ("/delete-by-id")
     public void deletePatient (@RequestParam Long id){
         try {
             patientService.deletePatientById(id);

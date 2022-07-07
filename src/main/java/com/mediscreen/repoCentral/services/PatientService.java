@@ -59,7 +59,7 @@ public class PatientService {
         try {
             patientLs = repo.findByFamily(family);
         } catch (NullPointerException e){
-            logger.info("Error in patientService getByFamily : NullPointerException");
+            logger.info("Error in patientService getByFamily");
             e.getMessage();
         }
         logger.info("in patientService getByFamily");

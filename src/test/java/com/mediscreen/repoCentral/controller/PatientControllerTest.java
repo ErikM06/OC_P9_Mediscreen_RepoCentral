@@ -53,7 +53,7 @@ public class PatientControllerTest {
     public void getPatientListTest_shouldReturns_200() throws Exception {
         Patient patient = new Patient();
         String patientName = "Test";
-        patient.setName(patientName);
+        patient.setFirstname(patientName);
         List<Patient> patientLsTest = Arrays.asList(patient);
         given(patientService.getAllPatient()).willReturn(patientLsTest);
 

@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @SpringBootApplication
 @EnableDiscoveryClient
 
-
 public class RepoCentralApplication {
 
 	public static void main(String[] args) {

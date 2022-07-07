@@ -40,7 +40,7 @@ public class PatientServiceTest {
 
     @Autowired
     PatientService patientService;
-    Patient patient = new Patient(1L,"patientTest","initTestNone", new Date(System.currentTimeMillis()), "initTest"
+    Patient patient = new Patient(1L,"patientTestFirstname","patientTestLastName","initTestNone", new Date(System.currentTimeMillis()), "initTest"
             , "F", "initAddressTest", "initPhoneTest");
 
 
@@ -73,7 +73,7 @@ public class PatientServiceTest {
 
     @Test
     public void addPatientTest() throws PatientAlreadyExistException {
-        Patient patient = new Patient(2L, "PatientTestToAdd","TestNone",  new Date(System.currentTimeMillis()),
+        Patient patient = new Patient(2L, "PatientTestToAdd","patientTestLastName","TestNone",  new Date(System.currentTimeMillis()),
                 "test" , "F", "addressTest", "phoneTest");
         patientService.addAPatient(patient);
 
@@ -112,17 +112,17 @@ public class PatientServiceTest {
     @Transactional
     @Test
     public void updatePatientTest() throws PatientIdNotFoundException {
-        Patient newPatient = new Patient(2L,"newPatientTest","TestDanger", new Date(System.currentTimeMillis()), "newTest"
+        Patient newPatient = new Patient(2L,"newPatientTest","patientTestLastName","TestDanger", new Date(System.currentTimeMillis()), "newTest"
                 , "F", "newAddressTest", "newPhoneTest");
 
         Patient oldPatient = patientRepo.getReferenceById(this.patient.getId());
         logger.debug("id "+this.patient.getId());
-        String name = oldPatient.getName();
+        String name = oldPatient.getFirstname();
         logger.debug("name "+name);
         newPatient.setId(oldPatient.getId());
         patientService.updatePatient(newPatient);
         Optional<Patient> check = patientRepo.findById(this.patient.getId());
-        assertNotEquals(name, check.get().getName());
+        assertNotEquals(name, check.get().getFirstname());
 
     }
 }
