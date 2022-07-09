@@ -1,55 +1,56 @@
-# OC_P9_Mediscreen_RepoCentral
+# P9-MEDISCREEN
 
-P9_OC Développez une solution en microservices pour votre client
+P9-Développez une solution en microservices pour votre client - Murer Erik
 
-RepoCentral est le microservice dédié a l'ajout, la modification, la suppression d'info personnels de patients.
 
 ## Technologies
-Java : 1.8 JDK
-Gradle : 7.4.1
-Spring : 2.6.6
+
+- Java 11 JDK
+- Gradle 7.4.1
+- Spring 2.7.1
+- Docker
 
 ## Specifications techniques
-Mediscreen est composé de 2 microservice :
 
-1. https://github.com/ErikM06/OC_P9_MEDISCREEN_CENTRAL.git
-
-2. https://github.com/ErikM06/OC_P9_Mediscreen_RepoCentral.git
+TourGuide se décompose en 4 microservice :
+1. Mediscreen-Central (Gateway) - https://github.com/ErikM06/OC_P9_MEDISCREEN_CENTRAL.git
+2. Mediscreen-Patient-Repo (microservice patient) - https://github.com/ErikM06/OC_P9_Mediscreen_RepoCentral.git
+3. Mediscreen-Notes-Repo (miscroservice observation) - https://github.com/ErikM06/OC_P9_ObservationRepo.git
+4. Mediscreen-DiabetesRisk (miscroservice diabetes risk) - https://github.com/ErikM06/OC_P9_MEDISCREEN_DIABETESRISK.git
+5. Mediscreen-Eureka - https://github.com/ErikM06/OC_P9_Mediscreen_Eureka.git
 
 ## Lancer l'application
 
 ### Gradle :
 1. Builder l'application
-`$ ./gradle build̀`
+
+`$ gradle build̀`
 
 2. Run l'application
-`$ ./gradle bootRun`
-
-# Endpoints 
-
-    GET - retourne un Patient par son Id 
-    http://localhost:8081/patient/getById
-    Param : id
-
-    GET - retourne la liste de tous les patients
-    http://localhost:8081/patient/getPatientList
+`$ gradle bootRun`
 
 
-    GET - retourne la liste de tous les patients de la famille donnée (famille=famille de   risque)
-    http://localhost:8081/patient/getPatientByFamily
-    Param : family
+### Docker :
+1. Builder l'application avec gradle (n° 1 vu ci-dessus).
 
-    POST - ajoute un Patient au la DB
-    http://localhost:8081/patient/add
-    Body: Patient
+2. Créer une image docker pour chaque micro-service dans leur dossier racine, a l'aide de la commande suivante :
+`$ docker build -t NAME_OF_YOUR_IMAGE:TAGVERSION .` 
 
-    POST - update un Patient 
-    http://localhost:8081/patient/update
-    Body : Patient
-    
-    DELETE - delete un Patient 
-    http://localhost:8081/patient/deleteById
-    Param : id
+3. Dans le dossier racine de Mediscreen-Central, utiliser Docker-Compose pour assembler les images et les lancer dans le même conteneur. Modifier le nom de chaque image dans le docker-compose.yaml afin de les faires correspondre a vos nom d'image et version.
+`$ docker-compose up`
 
 
 
+## Tester 
+
+- Pour tester l'application
+
+`$ gradle test`
+
+- Pour générer un rapport Jacoco
+
+`$ gradle jacocoTestReport`
+
+- Pour générer un rapport Jacoco de Couverture
+
+`$ gradle jacocoTestCoverageVerification`
