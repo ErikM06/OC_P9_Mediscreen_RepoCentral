@@ -44,7 +44,7 @@ public class PatientControllerTest {
 
     @Test
     public void getPatientByIdTest_shouldReturns_200() throws Exception {
-        mvc.perform(get("/patient/getById"+"?id="+1L)
+        mvc.perform(get("/patient/get-by-id"+"?id="+1L)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -53,11 +53,11 @@ public class PatientControllerTest {
     public void getPatientListTest_shouldReturns_200() throws Exception {
         Patient patient = new Patient();
         String patientName = "Test";
-        patient.setFirstname(patientName);
+        patient.setFirstName(patientName);
         List<Patient> patientLsTest = Arrays.asList(patient);
         given(patientService.getAllPatient()).willReturn(patientLsTest);
 
-        mvc.perform(get("/patient/getPatientList")
+        mvc.perform(get("/patient/get-patient-list")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -68,12 +68,12 @@ public class PatientControllerTest {
     public void getPatientByFamilyTest_shouldReturn_200() throws Exception {
         Patient patient = new Patient();
         String family = "TestNone";
-        patient.setFamily(family);
+        patient.setLastName(family);
 
         List<Patient> patientLsTest = Arrays.asList(patient);
-        given(patientService.getByFamily(family)).willReturn(patientLsTest);
+        given(patientService.getByLastName(family)).willReturn(patientLsTest);
 
-        mvc.perform(get("/patient/getPatientByFamily")
+        mvc.perform(get("/patient/get-patient-by-family")
                         .param("family",family)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -83,31 +83,31 @@ public class PatientControllerTest {
     }
     @Test
     public void addPatientTest_shouldReturns_201() throws Exception {
-        Patient patient = new Patient("TestNone", "test", new Date(System.currentTimeMillis())
+        Patient patient = new Patient(new Date(System.currentTimeMillis())
                 ,"F","addressTest","phoneTest");
 
         mvc.perform(post("/patient/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(patient)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(patient)))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    public void updatePatientTest_shouldReturns_200() throws Exception {
-        Patient patient = new Patient("TestNone", "test", new Date(System.currentTimeMillis())
+    public void updatePatientTest_shouldReturns_202() throws Exception {
+        Patient patient = new Patient(new Date(System.currentTimeMillis())
                 ,"F","addressTest","phoneTest");
         patient.setId(1L);
 
         mvc.perform(post("/patient/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(patient)))
-                .andExpect(status().isOk());
+                .andExpect(status().isAccepted());
     }
 
     @Test
     public void deletePatientTest_shouldReturns_202() throws Exception {
         long id = 1;
-        mvc.perform(delete("/patient/deleteById")
+        mvc.perform(delete("/patient/delete-by-id")
                         .param("id", Long.toString(id)))
                 .andExpect(status().isAccepted());
     }

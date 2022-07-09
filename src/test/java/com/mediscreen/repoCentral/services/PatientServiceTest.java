@@ -40,8 +40,8 @@ public class PatientServiceTest {
 
     @Autowired
     PatientService patientService;
-    Patient patient = new Patient(1L,"patientTestFirstname","patientTestLastName","initTestNone", new Date(System.currentTimeMillis()), "initTest"
-            , "F", "initAddressTest", "initPhoneTest");
+    Patient patient = new Patient(1L,"patientTestFirstname","patientTestLastName", new Date(System.currentTimeMillis()),
+            "F", "initAddressTest", "initPhoneTest");
 
 
     @BeforeEach
@@ -62,9 +62,12 @@ public class PatientServiceTest {
         assertNotNull(patient);
     }
 
+    /**
+     *  assert PatientIdNotFoundException is thrown when id is not found
+     */
     @Test
-    public void shouldReturnExceptionIfIdNotFound (){
-        // assert exception is thrown when id is not found
+    public void shouldReturnPatientIdNotFoundExceptionIfIdNotFound(){
+
         PatientIdNotFoundException thrown = Assertions.assertThrows(PatientIdNotFoundException.class, ()->{
             patientService.getById(70L);
         });
@@ -73,16 +76,19 @@ public class PatientServiceTest {
 
     @Test
     public void addPatientTest() throws PatientAlreadyExistException {
-        Patient patient = new Patient(2L, "PatientTestToAdd","patientTestLastName","TestNone",  new Date(System.currentTimeMillis()),
-                "test" , "F", "addressTest", "phoneTest");
+        Patient patient = new Patient(2L, "PatientTestToAdd","patientTestLastName", new Date(System.currentTimeMillis()),
+                "F", "addressTest", "phoneTest");
         patientService.addAPatient(patient);
 
         assertNotNull(patientRepo.findById(patient.getId()));
     }
 
+    /**
+     * assert PatientAlreadyExistException is thrown when trying to add a patient already existing
+     */
     @Test
     public void assertCanNotAddPatientIfExist (){
-        // add already existing patient
+
         PatientAlreadyExistException thrown = Assertions.assertThrows(PatientAlreadyExistException.class, ()->{
             patientService.addAPatient(patient);
         });
@@ -97,32 +103,38 @@ public class PatientServiceTest {
     }
     @Transactional
     @Test
-    public void getAllPatientByFamily() throws NullPointerException{
-        String family = "TestNone";
-        Patient patient = new Patient(family, "test", new Date(System.currentTimeMillis())
+    public void getAllPatientByLastName() throws NullPointerException{
+        String lastname = "TestNone";
+        Patient patient = new Patient(new Date(System.currentTimeMillis())
                 , "F", "addressTest", "phoneTest");
+        patient.setLastName(lastname);
+        Patient patientWithoutLastName = new Patient(new Date(System.currentTimeMillis())
+                , "F", "addressTest", "phoneTest");
+
+
+        patientRepo.save(patientWithoutLastName);
         patientRepo.save(patient);
         List<Patient> patientList = patientRepo.findAll();
-        List<Patient> patientListSpecifiedFamily = patientService.getByFamily(family);
+        List<Patient> patientListSpecifiedLastName = patientService.getByLastName(lastname);
 
-        assertNotEquals(patientList.size(),patientListSpecifiedFamily.size());
-        assertTrue(patientListSpecifiedFamily.contains(patient));
+        assertNotEquals(patientList.size(),patientListSpecifiedLastName.size());
+        assertTrue(patientListSpecifiedLastName.contains(patient));
     }
 
     @Transactional
     @Test
     public void updatePatientTest() throws PatientIdNotFoundException {
-        Patient newPatient = new Patient(2L,"newPatientTest","patientTestLastName","TestDanger", new Date(System.currentTimeMillis()), "newTest"
-                , "F", "newAddressTest", "newPhoneTest");
+        Patient newPatient = new Patient(2L,"newPatientTest","patientTestLastName", new Date(System.currentTimeMillis()),
+                "F", "newAddressTest", "newPhoneTest");
 
         Patient oldPatient = patientRepo.getReferenceById(this.patient.getId());
         logger.debug("id "+this.patient.getId());
-        String name = oldPatient.getFirstname();
+        String name = oldPatient.getFirstName();
         logger.debug("name "+name);
         newPatient.setId(oldPatient.getId());
         patientService.updatePatient(newPatient);
         Optional<Patient> check = patientRepo.findById(this.patient.getId());
-        assertNotEquals(name, check.get().getFirstname());
+        assertNotEquals(name, check.get().getFirstName());
 
     }
 }

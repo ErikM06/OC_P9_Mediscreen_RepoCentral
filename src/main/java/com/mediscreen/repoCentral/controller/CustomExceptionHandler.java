@@ -20,7 +20,7 @@ public class CustomExceptionHandler {
     private String INCORRECT_REQUEST ="INCORRECT_REQUEST";
 
     @ExceptionHandler (PatientAlreadyExistException.class)
-    public ResponseEntity<ErrorResponse> handlePatientAlreadyExist (PatientAlreadyExistException ex, WebRequest request){
+    public ResponseEntity<ErrorResponse> handlePatientAlreadyExist (PatientAlreadyExistException ex){
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse(BAD_REQUEST, details);
@@ -28,7 +28,7 @@ public class CustomExceptionHandler {
     }
 
     @ExceptionHandler (PatientIdNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handlePatientNotFound (PatientIdNotFoundException ex, WebRequest request){
+    public ResponseEntity<ErrorResponse> handlePatientNotFound (PatientIdNotFoundException ex){
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse(INCORRECT_REQUEST, details);

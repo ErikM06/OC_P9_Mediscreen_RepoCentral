@@ -16,6 +16,6 @@ public interface PatientRepo extends JpaRepository<Patient,Long> {
     Boolean assertPatientExist (String sex, String address, String phone);
 
     // find a patient by his family (From TestNone to TestInDanger)
-    @Query(value = "SELECT p FROM Patient p WHERE p.family=:family")
-    List<Patient> findByFamily(String family);
+    @Query(value = "SELECT p FROM Patient p WHERE p.lastName=:lastName")
+    List<Patient> findByLastName(String lastName);
 }

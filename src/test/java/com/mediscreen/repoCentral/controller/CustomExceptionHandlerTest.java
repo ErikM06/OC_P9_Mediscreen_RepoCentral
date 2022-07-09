@@ -1,6 +1,8 @@
 package com.mediscreen.repoCentral.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mediscreen.repoCentral.customExceptions.PatientAlreadyExistException;
+import com.mediscreen.repoCentral.customExceptions.PatientIdNotFoundException;
 import com.mediscreen.repoCentral.model.Patient;
 import com.mediscreen.repoCentral.services.PatientService;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,8 @@ import java.util.Date;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -40,38 +44,34 @@ public class CustomExceptionHandlerTest {
     PatientService patientService;
 
 
-   /* @Test
+   @Test
     public void handlePatientAlreadyExistTest_shouldReturns_400() throws Exception{
-        Patient patient = new Patient("TestNone", "test", new Date(System.currentTimeMillis())
+        Patient patient = new Patient(1L,"TestNone", "test", new Date(System.currentTimeMillis())
                 ,"F","addressTest","phoneTest");
 
-
-        mvc.perform(post("/patient/add")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(patient)))
-                .andExpect(status().isCreated());
+        given(patientService.addAPatient(any(Patient.class))).willThrow(PatientAlreadyExistException.class);
 
 
         mvc.perform(post("/patient/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(patient)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error",hasSize(1)));
+                .andExpect(status().isBadRequest());
+
     }
- */
-    /*
+
+
     @Test
     public void handlePatientNotFound() throws Exception {
         long id = 1000;
 
+        given(patientService.getById(any(Long.class))).willThrow(PatientIdNotFoundException.class);
+
         mvc.perform(get("/patient/getById")
                         .param("id",Long.toString(id))
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error", hasSize(1)));
-
+                .andExpect(status().isNotFound());
     }
-    */
+
 
 
 

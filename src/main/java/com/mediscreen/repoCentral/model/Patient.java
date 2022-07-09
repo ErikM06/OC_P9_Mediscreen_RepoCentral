@@ -15,43 +15,37 @@ import java.util.Date;
 @Entity
 @Table(name = "patient")
 @DynamicUpdate
-// see https://stackoverflow.com/questions/67353793/what-does-jsonignorepropertieshibernatelazyinitializer-handler-do
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idpatient")
     private Long id;
-    @Column(name ="firstname")
-    private String firstname;
-    @Column(name ="lastname")
-    private String lastname;
-    private String family;
+
+    @Column (name = "firstname")
+    private String firstName;
+    @Column (name = "lastname")
+    private String lastName;
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date dob;
-    private String given;
     private String sex;
     private String address;
     private String phone;
 
 
-    public Patient(String family, String given, Date dob, String sex, String address, String phone) {
+    public Patient(Date dob, String sex, String address, String phone) {
 
-        this.family = family;
         this.dob = dob;
-        this.given = given;
         this.sex = sex;
         this.address = address;
         this.phone = phone;
     }
 
-    public Patient(Long id, String firstname, String lastname, String family, Date dob, String given, String sex, String address, String phone) {
+    public Patient(Long id, String firstName, String lastName, Date dob, String sex, String address, String phone) {
         this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.family = family;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.dob = dob;
-        this.given = given;
         this.sex = sex;
         this.address = address;
         this.phone = phone;
@@ -68,28 +62,20 @@ public class Patient {
         this.id = id;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String name) {
-        this.firstname = name;
+    public void setFirstName(String name) {
+        this.firstName = name;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getFamily() {
-        return family;
-    }
-
-    public void setFamily(String family) {
-        this.family = family;
+    public void setLastName(String lastname) {
+        this.lastName = lastname;
     }
 
     public Date getDob() {
@@ -98,14 +84,6 @@ public class Patient {
 
     public void setDob(Date dob) {
         this.dob = dob;
-    }
-
-    public String getGiven() {
-        return given;
-    }
-
-    public void setGiven(String given) {
-        this.given = given;
     }
 
     public String getSex() {

@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,13 +21,10 @@ public class PatientService {
     PatientRepo repo;
 
     /**
-     *
      * @param patient
      * @return the patient to be saved
-     * @throws PatientAlreadyExistException
+     * @throws PatientAlreadyExistException if patient is already in db
      */
-
-
     public Patient addAPatient (Patient patient) throws PatientAlreadyExistException {
         logger.info("in PatientService addAPatient");
         if (repo.assertPatientExist(patient.getSex(), patient.getAddress(), patient.getPhone())){
@@ -39,7 +35,6 @@ public class PatientService {
     }
 
     /**
-     *
      * @return a list of all patients
      */
     public List<Patient> getAllPatient() {
@@ -49,24 +44,28 @@ public class PatientService {
 
     /**
      *
-     * @param family
-     * @return a list of all patient with the given family
-     * @throws NullPointerException
+     * @param lastName
+     * @return a list of all patient with the given lastName
+     * @throws NullPointerException if none
      */
-    public List<Patient> getByFamily(String family) throws  NullPointerException {
+    public List<Patient> getByLastName(String lastName) throws  NullPointerException {
         List<Patient> patientLs = new ArrayList<>();
-        // check if family type existe
+        // check if lastName exist
         try {
-            patientLs = repo.findByFamily(family);
+            patientLs = repo.findByLastName(lastName);
         } catch (NullPointerException e){
-            logger.info("Error in patientService getByFamily");
+            logger.info("Error in patientService getByLastName");
             e.getMessage();
         }
-        logger.info("in patientService getByFamily");
+        logger.info("in patientService getByLastName");
         return patientLs;
     }
 
-
+    /**
+     *
+     * @param patient to update
+     * @throws PatientIdNotFoundException
+     */
     public void updatePatient (Patient patient) throws PatientIdNotFoundException {
         logger.info("in PatientService updatePatient");
         if (!repo.existsById(patient.getId())){
@@ -75,6 +74,12 @@ public class PatientService {
         repo.save(patient);
     }
 
+    /**
+     *
+     * @param id
+     * @return long id
+     * @throws PatientIdNotFoundException
+     */
     public Patient getById(Long id) throws PatientIdNotFoundException{
         if (!repo.existsById(id)){
             throw  new PatientIdNotFoundException("patient with id "+ id+ " not found !");
