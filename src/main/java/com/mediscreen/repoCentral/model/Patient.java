@@ -23,14 +23,18 @@ public class Patient {
     private Long id;
 
     @Column (name = "firstname")
-    private String firstName;
+    private String firstname;
     @Column (name = "lastname")
-    private String lastName;
+    private String lastname;
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date dob;
     private String sex;
     private String address;
     private String phone;
+
+
+
+    private String assessment;
 
 
     public Patient(Date dob, String sex, String address, String phone) {
@@ -41,14 +45,15 @@ public class Patient {
         this.phone = phone;
     }
 
-    public Patient(Long id, String firstName, String lastName, Date dob, String sex, String address, String phone) {
+    public Patient(Long id, String firstname, String lastname, Date dob, String sex, String address, String phone, String assessment) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.dob = dob;
         this.sex = sex;
         this.address = address;
         this.phone = phone;
+        this.assessment = assessment;
     }
 
     public Patient() {
@@ -63,19 +68,19 @@ public class Patient {
     }
 
     public String getFirstName() {
-        return firstName;
+        return firstname;
     }
 
     public void setFirstName(String name) {
-        this.firstName = name;
+        this.firstname = name;
     }
 
     public String getLastName() {
-        return lastName;
+        return lastname;
     }
 
     public void setLastName(String lastname) {
-        this.lastName = lastname;
+        this.lastname = lastname;
     }
 
     public Date getDob() {
@@ -108,5 +113,13 @@ public class Patient {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getAssessment() {
+        return assessment;
+    }
+
+    public void setAssessment(String assessment) {
+        this.assessment = assessment;
     }
 }

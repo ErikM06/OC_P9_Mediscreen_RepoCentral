@@ -41,7 +41,7 @@ public class PatientServiceTest {
     @Autowired
     PatientService patientService;
     Patient patient = new Patient(1L,"patientTestFirstname","patientTestLastName", new Date(System.currentTimeMillis()),
-            "F", "initAddressTest", "initPhoneTest");
+            "F", "initAddressTest", "initPhoneTest", null);
 
 
     @BeforeEach
@@ -77,7 +77,7 @@ public class PatientServiceTest {
     @Test
     public void addPatientTest() throws PatientAlreadyExistException {
         Patient patient = new Patient(2L, "PatientTestToAdd","patientTestLastName", new Date(System.currentTimeMillis()),
-                "F", "addressTest", "phoneTest");
+                "F", "addressTest", "phoneTest", null);
         patientService.addAPatient(patient);
 
         assertNotNull(patientRepo.findById(patient.getId()));
@@ -125,7 +125,7 @@ public class PatientServiceTest {
     @Test
     public void updatePatientTest() throws PatientIdNotFoundException {
         Patient newPatient = new Patient(2L,"newPatientTest","patientTestLastName", new Date(System.currentTimeMillis()),
-                "F", "newAddressTest", "newPhoneTest");
+                "F", "newAddressTest", "newPhoneTest", null);
 
         Patient oldPatient = patientRepo.getReferenceById(this.patient.getId());
         logger.debug("id "+this.patient.getId());

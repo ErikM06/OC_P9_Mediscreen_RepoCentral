@@ -48,9 +48,9 @@ public class PatientController {
         return patientList;
     }
 
-    @GetMapping ("/get-patient-by-family")
-    public List<Patient> getPatientByFamily (@RequestParam String family){
-        List<Patient> patientls = patientService.getByLastName(family);
+    @GetMapping ("/get-patient-by-lastname")
+    public List<Patient> getPatientByFamily (@RequestParam String lastname){
+        List<Patient> patientls = patientService.getByLastName(lastname);
         return patientls;
     }
 

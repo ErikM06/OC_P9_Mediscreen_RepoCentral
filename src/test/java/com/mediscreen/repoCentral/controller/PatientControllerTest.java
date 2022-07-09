@@ -3,8 +3,11 @@ package com.mediscreen.repoCentral.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mediscreen.repoCentral.model.Patient;
 import com.mediscreen.repoCentral.services.PatientService;
+import com.mediscreen.repoCentral.services.PatientServiceTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,6 +23,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -31,6 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(PatientController.class)
 @TestPropertySource(locations= "classpath:application-test.properties")
 public class PatientControllerTest {
+
+    Logger logger = LoggerFactory.getLogger(PatientControllerTest.class);
 
     @Autowired
     private MockMvc mvc;
@@ -51,34 +57,38 @@ public class PatientControllerTest {
 
     @Test
     public void getPatientListTest_shouldReturns_200() throws Exception {
-        Patient patient = new Patient();
         String patientName = "Test";
-        patient.setFirstName(patientName);
-        List<Patient> patientLsTest = Arrays.asList(patient);
+        Patient patient = new Patient(1l,"patientName", "lastname" , new Date(System.currentTimeMillis()), "M", "addressTest", "phoneTest", null);
+
+        List<Patient> patientLsTest = List.of(patient);
         given(patientService.getAllPatient()).willReturn(patientLsTest);
+
+
 
         mvc.perform(get("/patient/get-patient-list")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].name", is(patientName)));
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
     public void getPatientByFamilyTest_shouldReturn_200() throws Exception {
-        Patient patient = new Patient();
-        String family = "TestNone";
-        patient.setLastName(family);
+        String lastname = "lastNameTest";
 
-        List<Patient> patientLsTest = Arrays.asList(patient);
-        given(patientService.getByLastName(family)).willReturn(patientLsTest);
+        Patient patient = new Patient(1L,"firstNameTest", lastname , new Date(System.currentTimeMillis()),
+                "M", "addressTest", "phoneTest", null);
 
-        mvc.perform(get("/patient/get-patient-by-family")
-                        .param("family",family)
+
+        List<Patient> patientLsTest = List.of(patient);
+        given(patientService.getByLastName(any())).willReturn(patientLsTest);
+        logger.debug(""+patientLsTest.get(0));
+
+        mvc.perform(get("/patient/get-patient-by-lastname")
+                        .param("lastname",objectMapper.writeValueAsString(lastname))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].family", is(family)));
+                .andExpect(jsonPath("$",hasSize(1)));
+
 
     }
     @Test
@@ -93,7 +103,7 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void updatePatientTest_shouldReturns_202() throws Exception {
+    public void updatePatientTest_shouldReturns_200() throws Exception {
         Patient patient = new Patient(new Date(System.currentTimeMillis())
                 ,"F","addressTest","phoneTest");
         patient.setId(1L);
@@ -101,7 +111,7 @@ public class PatientControllerTest {
         mvc.perform(post("/patient/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(patient)))
-                .andExpect(status().isAccepted());
+                .andExpect(status().isOk());
     }
 
     @Test

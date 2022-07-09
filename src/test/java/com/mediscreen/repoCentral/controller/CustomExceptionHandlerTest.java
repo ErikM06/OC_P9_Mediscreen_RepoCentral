@@ -47,10 +47,9 @@ public class CustomExceptionHandlerTest {
    @Test
     public void handlePatientAlreadyExistTest_shouldReturns_400() throws Exception{
         Patient patient = new Patient(1L,"TestNone", "test", new Date(System.currentTimeMillis())
-                ,"F","addressTest","phoneTest");
+                ,"F","addressTest","phoneTest", null);
 
         given(patientService.addAPatient(any(Patient.class))).willThrow(PatientAlreadyExistException.class);
-
 
         mvc.perform(post("/patient/add")
                         .contentType(MediaType.APPLICATION_JSON)
