@@ -2,6 +2,7 @@ package com.mediscreen.repoCentral.controller;
 
 import com.mediscreen.repoCentral.customExceptions.PatientAlreadyExistException;
 import com.mediscreen.repoCentral.customExceptions.PatientIdNotFoundException;
+import com.mediscreen.repoCentral.customExceptions.PatientLastNameNotFound;
 import com.mediscreen.repoCentral.model.error.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,14 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler (PatientIdNotFoundException.class)
     public ResponseEntity<ErrorResponse> handlePatientNotFound (PatientIdNotFoundException ex){
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse(INCORRECT_REQUEST, details);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler (PatientLastNameNotFound.class)
+    public ResponseEntity<ErrorResponse> handlePatientLastNameNotFound (PatientLastNameNotFound ex){
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse(INCORRECT_REQUEST, details);

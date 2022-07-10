@@ -2,6 +2,7 @@ package com.mediscreen.repoCentral.controller;
 
 import com.mediscreen.repoCentral.customExceptions.PatientAlreadyExistException;
 import com.mediscreen.repoCentral.customExceptions.PatientIdNotFoundException;
+import com.mediscreen.repoCentral.customExceptions.PatientLastNameNotFound;
 import com.mediscreen.repoCentral.model.Patient;
 import com.mediscreen.repoCentral.services.PatientService;
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ public class PatientController {
             patient =  patientService.getById(id);
         } catch (PatientIdNotFoundException e){
             logger.info("Error in /patient/get-by-id :"+e.getMessage());
-           throw new PatientIdNotFoundException("Patient with id: "+id+" not found");
+            throw new PatientIdNotFoundException("Patient with id: "+id+" not found");
         }
         return patient;
 
@@ -50,7 +51,14 @@ public class PatientController {
 
     @GetMapping ("/get-patient-by-lastname")
     public List<Patient> getPatientByFamily (@RequestParam String lastname){
-        List<Patient> patientls = patientService.getByLastName(lastname);
+        List<Patient> patientls = null;
+
+        try {
+            patientls = patientService.getByLastName(lastname);
+        } catch (PatientLastNameNotFound e){
+            throw new PatientLastNameNotFound(e.getMessage());
+
+        }
         return patientls;
     }
 
@@ -61,7 +69,7 @@ public class PatientController {
             servletResponse.setStatus(HttpServletResponse.SC_CREATED);
         } catch (PatientAlreadyExistException e){
             logger.info("Error in /patient/add :"+e.getMessage());
-           throw new PatientAlreadyExistException(e.getMessage());
+            throw new PatientAlreadyExistException(e.getMessage());
         }
         return patient;
     }
@@ -78,7 +86,7 @@ public class PatientController {
         return patient;
     }
 
-    @DeleteMapping ("/delete-by-id")
+    @GetMapping ("/delete-by-id")
     public void deletePatient (@RequestParam Long id, HttpServletResponse servletResponse){
         try {
 

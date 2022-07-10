@@ -2,6 +2,7 @@ package com.mediscreen.repoCentral.services;
 
 import com.mediscreen.repoCentral.customExceptions.PatientAlreadyExistException;
 import com.mediscreen.repoCentral.customExceptions.PatientIdNotFoundException;
+import com.mediscreen.repoCentral.customExceptions.PatientLastNameNotFound;
 import com.mediscreen.repoCentral.model.Patient;
 import com.mediscreen.repoCentral.repository.PatientRepo;
 import org.slf4j.Logger;
@@ -27,9 +28,9 @@ public class PatientService {
      */
     public Patient addAPatient (Patient patient) throws PatientAlreadyExistException {
         logger.info("in PatientService addAPatient");
-        if (repo.assertPatientExist(patient.getSex(), patient.getAddress(), patient.getPhone())){
+        if (repo.assertPatientExistByLastNameAndFirstName(patient.getLastName(), patient.getFirstName())){
             logger.info("patient already exist in PatientService addAPatient");
-            throw  new PatientAlreadyExistException("Patient "+patient.getPhone()+" already exist");
+            throw  new PatientAlreadyExistException("Patient "+patient.getLastName()+" already exist");
         }
         return repo.save(patient);
     }
@@ -48,15 +49,15 @@ public class PatientService {
      * @return a list of all patient with the given lastName
      * @throws NullPointerException if none
      */
-    public List<Patient> getByLastName(String lastName) throws  NullPointerException {
+    public List<Patient> getByLastName(String lastName) throws PatientLastNameNotFound {
         List<Patient> patientLs = new ArrayList<>();
         // check if lastName exist
-        try {
+       if (!repo.assertPatientExistByLastName(lastName)){
+           throw new PatientLastNameNotFound("Patient with lastname "+ lastName+" not found!");
+       }
             patientLs = repo.findByLastName(lastName);
-        } catch (NullPointerException e){
-            logger.info("Error in patientService getByLastName");
-            e.getMessage();
-        }
+
+
         logger.info("in patientService getByLastName");
         return patientLs;
     }
