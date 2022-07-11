@@ -117,7 +117,7 @@ public class PatientControllerTest {
     @Test
     public void deletePatientTest_shouldReturns_202() throws Exception {
         long id = 1;
-        mvc.perform(delete("/patient/delete-by-id")
+        mvc.perform(get("/patient/delete-by-id")
                         .param("id", Long.toString(id)))
                 .andExpect(status().isAccepted());
     }
