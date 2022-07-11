@@ -15,13 +15,12 @@ import java.util.Date;
 @Entity
 @Table(name = "patient")
 @DynamicUpdate
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idpatient")
     private Long id;
-
     @Column (name = "firstname")
     private String firstname;
     @Column (name = "lastname")
@@ -31,8 +30,6 @@ public class Patient {
     private String sex;
     private String address;
     private String phone;
-
-
 
     private String assessment;
 

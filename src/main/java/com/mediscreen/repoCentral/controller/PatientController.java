@@ -41,10 +41,10 @@ public class PatientController {
         }
         return patient;
 
-
     }
     @GetMapping ("/get-patient-list")
     public List<Patient>getPatient() {
+
         List<Patient> patientList = patientService.getAllPatient();
         return patientList;
     }
